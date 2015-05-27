@@ -21,7 +21,7 @@ all: main
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
-main: $(OBJ)/main.o
+main: $(OBJ)/main.o $(OBJ)/dico.o
 	$(CC) $(CFLAGS) -o $(BIN)/$@ $^
 
 clean:
