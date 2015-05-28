@@ -142,7 +142,7 @@ int get_code(data o, map* dic)
  * Supprime un dictionnaire
  * @param dic : Un pointeur sur le dictionnaire à supprimer
  */
-void free_m(map* dic)
+void free_map(map* dic)
 {
 	elem* prev, *current;
 	int i;

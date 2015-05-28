@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 	printf(is_set(*dd, d) ? "Is set (1,2) ? yes\n" : "Is set 1,2 ? no\n");
 	printf("Code of (1,2) : %d\n", get_code(*dd, d));
 
-	free_m(d);
+	free_map(d);
 
 	return EXIT_SUCCESS;
 }
