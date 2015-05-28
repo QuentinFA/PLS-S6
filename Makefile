@@ -18,10 +18,13 @@ TO_CLEAN = $(BIN)/* $(OBJ)/*
 
 all: main
 
+$(OBJ)/%.o: $(SRC)/%.c $(INC)/%.h
+	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
+
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
-main: $(OBJ)/main.o $(OBJ)/dico.o
+main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o
 	$(CC) $(CFLAGS) -o $(BIN)/$@ $^
 
 clean:
