@@ -139,6 +139,33 @@ int get_code(data o, map* dic)
 }
 
 /*
+ * Récupération de la donnée corrrespondant à un code
+ * @param code : Le code dont on veut la donnée
+ * @param dic : Un pointeur sur le dictionnaire dans lequel chercher
+ * @return : La donnée correspondante, ou NULL si non présent
+ */
+data* get_data(int code, map* dic)
+{
+	// TODO : A optimiser en temps de recherche (Not optimized)
+	elem* current;
+	int i;
+
+	for(i = 0; i < dic->size; i++)
+	{
+		current = dic->tab[i];
+		if(current != NULL)
+		{
+			while(current != NULL && current->code != code)
+				current = current->next;
+			if(current != NULL && current->code == code)
+				return current->data;
+		}
+	}
+
+	return (data*) NULL;
+}
+
+/*
  * Supprime un dictionnaire
  * @param dic : Un pointeur sur le dictionnaire à supprimer
  */

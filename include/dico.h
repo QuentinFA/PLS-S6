@@ -54,12 +54,22 @@ void set_code(data* o, map* dic);
 bool is_set(data o, map* dic);
 
 /*
+ * CODAGE
  * Permet de récupérer le code d'une donnée dans la map
  * @param o : La donnée
  * @param dic : Le dictionnaire
  * @return : Le code correspendant à la donnée
  */
 int get_code(data o, map* dic);
+
+/*
+ * DECODAGE
+ * Récupération de la donnée corrrespondant à un code
+ * @param code : Le code dont on veut la donnée
+ * @param dic : Un pointeur sur le dictionnaire dans lequel chercher
+ * @return : La donnée correspondante, ou NULL si non présent
+ */
+data* get_data(int code, map* dic);
 
 /*
  * Supprime un dictionnaire
