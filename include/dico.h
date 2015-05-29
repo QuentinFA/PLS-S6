@@ -27,6 +27,7 @@ struct map
 {
 	int size;
 	int nb_elem;
+	int code_size;
 	elem** tab;
 };
 

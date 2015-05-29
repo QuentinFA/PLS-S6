@@ -25,6 +25,7 @@ map* init_map()
 	dic->tab = calloc(BEGINING_SIZE, sizeof(elem));
 	dic->nb_elem = 0;
 	dic->size = BEGINING_SIZE;
+	dic->code_size = 9;
 
 	// Initialisation des valeurs possibles et de leur encodage sur 1 octet
 	for(i = 0; i < 256; i++)
@@ -81,6 +82,9 @@ map* init_map()
 
 	add_here->data = o;
 	add_here->code = dic->nb_elem++;
+
+	if(dic->nb_elem >= 2<<dic->code_size)
+		dic->code_size++;
 
 }
 
