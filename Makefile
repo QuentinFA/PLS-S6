@@ -24,7 +24,7 @@ $(OBJ)/%.o: $(SRC)/%.c $(INC)/%.h
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
-main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o
+main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/lect-ecri-bin.o
 	$(CC) $(CFLAGS) -o $(BIN)/$@ $^
 
 clean:
