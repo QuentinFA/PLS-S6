@@ -61,13 +61,6 @@ map* init_map()
 	int h = hash(*o) % dic->size;
 	elem* add_here;
 
-	// Pas assez d'espace, augmentation d'une puissance de 2
-	/*if(++dic->nb_elem > dic->size)
-	{
-		dic->size *= 2;
-		dic->tab = realloc(dic->tab, sizeof(elem) * dic->size);
-	}*/
-
 	add_here = dic->tab[h];
 
 	// Gestion des collisions avec une liste
@@ -98,7 +91,6 @@ map* init_map()
 		dic->tab[h] = add_here;
 	}
 
-	// Echec du calloc
 	if(add_here == NULL)
 	{
 		fprintf(stderr, "Allocation error : data.c/create_data\n");
@@ -108,7 +100,7 @@ map* init_map()
 	add_here->data = o;
 	add_here->code = dic->nb_elem++;
 
-	if(dic->nb_elem >= 2<<dic->code_size)
+	if(dic->nb_elem >= 2 << dic->code_size)
 		dic->code_size++;
 
 }
