@@ -1,7 +1,7 @@
 /*************************************
  * Projet Logiciel Niveau Système    *
  *   Antoine BLANC - Quentin FAURE   *
- * Sara OOUNISSI - Adrien SIPASSEUTH *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
  *             Sun BIN               *
  *              RICM 3               *
  *************************************/
@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include<string.h>
+#include <string.h>
 #include "lect-ecri-bin.h"
 
 //on a un buffer avec une variable a l'interieur

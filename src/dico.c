@@ -1,7 +1,7 @@
 /*************************************
  * Projet Logiciel Niveau Système    *
  *   Antoine BLANC - Quentin FAURE   *
- * Sara OOUNISSI - Adrien SIPASSEUTH *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
  *             Sun BIN               *
  *              RICM 3               *
  *************************************/
@@ -22,7 +22,20 @@ map* init_map()
 
 	dic = malloc(sizeof(map));
 
+	if(dic == NULL)
+	{
+		fprintf(stderr, "Allocation error : dico.c/init_map\n");
+		exit(EXIT_FAILURE);
+	}
+
 	dic->tab = calloc(BEGINING_SIZE, sizeof(elem));
+
+	if(dic->tab == NULL)
+	{
+		fprintf(stderr, "Allocation error : dico.c/init_map\n");
+		exit(EXIT_FAILURE);
+	}
+
 	dic->nb_elem = 0;
 	dic->size = BEGINING_SIZE;
 	dic->code_size = 9;
@@ -65,11 +78,25 @@ map* init_map()
 		while(add_here->next != NULL)
 			add_here = add_here->next;
 		add_here->next = calloc(1, sizeof(elem));
+
+		if(add_here == NULL)
+		{
+			fprintf(stderr, "Allocation error : dico.c/set_code\n");
+			exit(EXIT_FAILURE);
+		}
+		
 		add_here = add_here->next;
 	}
 	else
 	{
 		add_here = calloc(1, sizeof(elem));
+
+		if(add_here == NULL)
+		{
+			fprintf(stderr, "Allocation error : dico.c/set_code\n");
+			exit(EXIT_FAILURE);
+		}
+		
 		dic->tab[h] = add_here;
 	}
 

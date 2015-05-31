@@ -1,7 +1,7 @@
 /*************************************
  * Projet Logiciel Niveau Système    *
  *   Antoine BLANC - Quentin FAURE   *
- * Sara OOUNISSI - Adrien SIPASSEUTH *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
  *             Sun BIN               *
  *              RICM 3               *
  *************************************/

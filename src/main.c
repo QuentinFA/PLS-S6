@@ -1,7 +1,7 @@
 /*************************************
  * Projet Logiciel Niveau Système    *
  *   Antoine BLANC - Quentin FAURE   *
- * Sara OOUNISSI - Adrien SIPASSEUTH *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
  *             Sun BIN               *
  *              RICM 3               *
  *************************************/
@@ -38,12 +38,12 @@ int main(int argc, char* argv[])
 ///////////////////////////////////////////////////////////////////////////////////
 	printf("/n");
 	
-	FILE *fichier_entree ,*fichier_sortie;
+	FILE /**fichier_entree ,*/*fichier_sortie;
 	
-	fichier_entree = fopen("entre.txt", "r");
+	//fichier_entree = fopen("entre.txt", "r");
 	fichier_sortie = fopen("sortie.txt", "w");
 	
-	int buffer_rec;
+	//int buffer_rec;
 	char buffer_env;
 	
 	write_code(fichier_sortie, 97, 9, &buffer_env, 8);
