@@ -33,7 +33,7 @@ struct map
 
 /*
  * Initialisation d'un dictionnaire
- * @param dic : Un pointeur vers le dictionnaire à créer
+ * @return : Un pointeur vers le dictionnaire à créer
  */
 map* init_map();
 
@@ -41,8 +41,6 @@ map* init_map();
  * Ajoute un code correspondant à une donnée
  * @param o : La donnée
  * @param dic : Le dictionnaire à modifier
- * @param code : Le code correspondant à o à ajouter
- * @return : True si l'ajout a réussi, False sinon
  */
 void set_code(data* o, map* dic);
 
