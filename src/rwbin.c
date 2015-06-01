@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "rwbin.h"
+#include "dico.h"
 
 /*
  * Lecture d'un octet dans un fichier
@@ -106,27 +107,27 @@ void write (FILE* file, unsigned char car){
  * @param k : Le nombre de bit à écrire pour completer l'octet
  */
 void writer_code(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste){
-	if(*reste != (taille-8) && code != 256){	
+	if(*reste != (taille-RW_SIZE) && code != _EOF){	
 		*buffer = *buffer | (code);
 		unsigned char mot = *buffer >> (taille - *reste);
 		write(file, mot);
 		*buffer = *buffer << taille;
 		*reste = *reste -1;
-	}else if (code == 256 && *reste != (taille-8)){ 
+	}else if (code == _EOF && *reste != (taille-RW_SIZE)){ 
 		*buffer = *buffer | (code);
 		unsigned char mot = *buffer >> (taille - *reste);
 		write(file, mot);
-		mot = *buffer << (8-(taille - *reste));
+		mot = *buffer << (RW_SIZE-(taille - *reste));
 		*buffer = *buffer << taille;
 		write(file, mot);
 		*reste = *reste -1;
 	}else{
 		*buffer = *buffer | (code);
-		unsigned char mot = *buffer >> 8;
+		unsigned char mot = *buffer >> RW_SIZE;
 		write(file,mot);
 		mot = *buffer & 255;
 		write(file,mot);
 		*buffer = 0;
-		*reste = 8;
+		*reste = RW_SIZE;
 	}
 }
