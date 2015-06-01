@@ -11,6 +11,13 @@
 #define RW_SIZE 8
 
 /*
+ * Lecture d'un octet dans un fichier
+ * @param file : Le fichier dans lequel lire
+ * @return : L'octet lu
+ */
+unsigned char read(FILE* file);
+
+/*
  * Ecrit un code dans un fichier
  * @param file : Le fichier dans lequel lire
  * @param code_size : La taille du code à lire

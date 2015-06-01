@@ -7,30 +7,85 @@
  *************************************/
 #include <stdlib.h>
 #include <stdio.h>
-#include "dico.h"
-#include "data.h"
-#include "rwbin.h"
-#include "codage.h"
+#include <string.h>
+#include <unistd.h> 
+#include <stdbool.h>
+#include <sys/stat.h>
+//#include "codage.h"
+
+#define _COMPRESS "-c"
+#define _DECOMPRESS "-d"
+#define _APP_NAME "lwz"
+#define _EXTENSION ".lwz"
+
+void help();
+bool is_directory(const char *path);
 
 int main(int argc, char* argv[])
 {
-	map* d = init_map();
+	int i;
+	char* out;
 
-	int cr, nb_prev = 0, n;
-	int end = _EOF;
-	int i = 0;
-	data d_eof = *create_data(&end, 1);
-	FILE* file = fopen("a.out", "rb");
-
-	do
+	if(argc <= 2)
+		help();
+	else
 	{
-		cr = read_c(file, 9, &nb_prev, &n, n);
-		printf("0x%x\n", cr);
-		i++;
-	} while(cr != get_code(d_eof, d));
-	
-	free_map(d);
+		if(!strcmp(argv[1], _COMPRESS))
+		{
+			for(i = 2; i < argc; i++)
+			{
+				if(access(argv[i], F_OK) == -1)
+					printf("\t%s does not exist...\n", argv[i]);
+				else if(is_directory(argv[i]))
+					printf("\t%s is a directory\n", argv[i]);
+				else
+				{
+					out = malloc(strlen((argv[i]) + 4) * sizeof(char));
+					strcpy(out, argv[i]);
+					strcat(out, _EXTENSION);
+					printf("Compressing %s as %s...\n", argv[i], out);
+					// SEND TO COMPRESS FUNC
+				}
+			}
+		}
+		else if(!strcmp(argv[1], _DECOMPRESS))
+		{
+			for(i = 2; i < argc; i++)
+			{
+				if(access(argv[i], F_OK) == -1)
+					printf("\t%s does not exist...\n", argv[i]);
+				else if(is_directory(argv[i]))
+					printf("\t%s is a directory\n", argv[i]);
+				else
+				{
+					if(strstr(argv[i], _EXTENSION) == NULL)
+						printf("\t%s does not have the right extension.\n", argv[i]);
+					else
+					{
+						out = malloc(strlen((argv[i]) - 4) * sizeof(char));
+						strcpy(out, argv[i]);
+						*(strstr(out, _EXTENSION)) = '\0';
+						printf("Decompressing %s as %s...\n", argv[i], out);
+						// SEND TO DECOMPRESS FUNC
+					}
+				}
+			}
+		}
+		else
+			help();
+	}
 
-	return EXIT_SUCCESS;	
-	
+	return EXIT_SUCCESS;
+}
+
+void help()
+{
+	printf("Utilisation : %s [%s | %s] file1 [file2 ...]\n\t%s : Compression de fichiers\n\t%s : Décompression de fichiers\n", _APP_NAME, _COMPRESS, _DECOMPRESS, _COMPRESS, _DECOMPRESS);
+}
+
+bool is_directory(const char *path)
+{
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISDIR(path_stat.st_mode);
 }

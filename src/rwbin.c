@@ -10,6 +10,26 @@
 #include "rwbin.h"
 
 /*
+ * Lecture d'un octet dans un fichier
+ * @param file : Le fichier dans lequel lire
+ * @return : L'octet lu
+ */
+unsigned char read(FILE* file)
+{
+	if(file == NULL)
+	{
+		fprintf(stderr, "Null file pointer : rwbin.c/read\n");
+		exit(EXIT_FAILURE);
+	}
+
+	unsigned char read;
+
+	fread(&read, sizeof(read), 1, file);
+
+	return read;
+}
+
+/*
  * Ecrit un code dans un fichier
  * @param file : Le fichier dans lequel lire
  * @param code_size : La taille du code à lire
@@ -30,18 +50,12 @@
  */
 int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev)
 {
-	if(file == NULL)
-	{
-		fprintf(stderr, "Null file pointer : rwbin.c/read_c\n");
-		exit(EXIT_FAILURE);
-	}
-
 	int i;
 	int res = from_prev;
 	int nb_read = (code_size / RW_SIZE) + 1;
 	int fn = RW_SIZE - (code_size - *nb_prev) % RW_SIZE;
 	int mask;
-	unsigned char read;
+	unsigned char r;
 
 	if(fn == RW_SIZE)
 		fn = 0;
@@ -53,9 +67,9 @@ int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev
 
 	while(i < nb_read)
 	{
-		fread(&read, sizeof(read), 1, file);
+		r = read(file);
 		res <<= RW_SIZE;
-		res += read;
+		res += r;
 		i++;
 	}
 	
