@@ -18,7 +18,7 @@
 typedef struct data data;
 struct data
 {
-	unsigned char d;
+	short int d;
 	data *next;
 	int size;
 };

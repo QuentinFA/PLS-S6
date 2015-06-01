@@ -1,8 +1,16 @@
+/*************************************
+ * Projet Logiciel Niveau Système    *
+ *   Antoine BLANC - Quentin FAURE   *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
+ *             Sun BIN               *
+ *              RICM 3               *
+ *************************************/
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "dico.h"
 #include "data.h"
-#include <string.h>
+#include "codage.h"
 
 int * codage(FILE* f, map* dic)
 { 
