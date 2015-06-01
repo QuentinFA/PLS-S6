@@ -26,7 +26,7 @@
  *		{
  *			cr = read_c(file, 9, &nb_prev, &n, n);
  *			i++;
- *		} while(cr != 256);
+ *		} while(cr != 256); // Correspond à EOF
  */
 int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev)
 {
@@ -68,15 +68,51 @@ int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev
 	return res;
 }
 
-void write_c(FILE* file, int code_size, int* w_prev, int* for_next, int from_prev)
-{
+/*
+ * Ecrit un caractere dans le fichier spécifié
+ * @param fichier : Fichier sortie 
+ * @param car : Caractere à insérer dans le fichier
+ */
+void write (FILE* file, unsigned char car){
+
 	if(file == NULL)
 	{
-		fprintf(stderr, "Null file pointer : rwbin.c/write_c\n");
+		fprintf(stderr, "Null file pointer : rwbin.c/write\n");
 		exit(EXIT_FAILURE);
 	}
+	fwrite(&car, sizeof(car), 1, file);
+}
 
-	/*int i;
-
-	unsigned char write;*/
+/*
+ * Texte -> Compresseur -> 8bits
+ * @param file : Fichier sortie
+ * @param code : Code du caractère 
+ * @param taille : Taille du code
+ * @param buffer : Buffer contenant le reste auquel le code suivant sera ajouté
+ * @param k : Le nombre de bit à écrire pour completer l'octet
+ */
+void writer_code(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste){
+	if(*reste != (taille-8) && code != 256){	
+		*buffer = *buffer | (code);
+		unsigned char mot = *buffer >> (taille - *reste);
+		write(file, mot);
+		*buffer = *buffer << taille;
+		*reste = *reste -1;
+	}else if (code == 256 && *reste != (taille-8)){ 
+		*buffer = *buffer | (code);
+		unsigned char mot = *buffer >> (taille - *reste);
+		write(file, mot);
+		mot = *buffer << (8-(taille - *reste));
+		*buffer = *buffer << taille;
+		write(file, mot);
+		*reste = *reste -1;
+	}else{
+		*buffer = *buffer | (code);
+		unsigned char mot = *buffer >> 8;
+		write(file,mot);
+		mot = *buffer & 255;
+		write(file,mot);
+		*buffer = 0;
+		*reste = 8;
+	}
 }

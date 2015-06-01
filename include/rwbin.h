@@ -31,6 +31,21 @@
  */
 int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev);
 
-void write_c(FILE* file, int code_size, int* w_prev, int* for_next, int from_prev);
+/*
+ * Ecrit un caractere dans le fichier spécifié
+ * @param fichier : Fichier sortie 
+ * @param car : Caractere à insérer dans le fichier
+ */
+void write (FILE* file, unsigned char car);
+
+/*
+ * Texte -> Compresseur -> 8bits
+ * @param file : Fichier sortie
+ * @param code : Code du caractère 
+ * @param taille : Taille du code
+ * @param buffer : Buffer contenant le reste auquel le code suivant sera ajouté
+ * @param k : Le nombre de bit à écrire pour completer l'octet
+ */
+void write_c(FILE* file, unsigned int code, unsigned int taille, int* buffer, int* reste);
 
 #endif

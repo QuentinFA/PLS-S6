@@ -26,7 +26,7 @@ $(OBJ)/%.o: $(SRC)/%.c
 	@- mkdir -p $(OBJ)
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
-main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/rwbin.o $(OBJ)/codage.o
+main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/rwbin.o
 	@- mkdir -p $(BIN)
 	$(CC) $(CFLAGS) -o $(BIN)/$@ $^
 
