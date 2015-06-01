@@ -45,6 +45,18 @@ void write (FILE* file, unsigned char car);
  * @param taille : Taille du code
  * @param buffer : Buffer contenant le reste auquel le code suivant sera ajouté
  * @param k : Le nombre de bit à écrire pour completer l'octet
+ * Exemple:
+ * FILE *fichier_sortie;
+ *
+ * fichier_sortie = fopen("sortie.txt", "w+");
+ *	
+ *int buffer_env=0;
+ * 
+ *int reste = 8;
+ *
+ *writer_c(fichier_sortie, 'a', 9, &buffer_env, &reste);
+ *writer_c(fichier_sortie, 'b', 9, &buffer_env, &reste);
+ *writer_c(fichier_sortie, 256, 9, &buffer_env, &reste);
  */
 void write_c(FILE* file, unsigned int code, unsigned int taille, int* buffer, int* reste);
 
