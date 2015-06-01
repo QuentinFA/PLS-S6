@@ -27,12 +27,15 @@ int read_code(FILE* file, int taille, int k, int* buffer);
 */
 void write_code(FILE* file, int code, int taille, char* buffer, int k);
 
+
+void writer_code(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste);
+
 /*ecrit un caractere dans le fichier spécifié
 //@param fichier sortie 
 //@param caractere à insérer dans le fichier
 //@return rien
 */
-void write (FILE* fichier, char car);
+void write (FILE* fichier, unsigned char car);
 
 /*lit un caractere dans le fichier spécifié
 //@param fichier entree

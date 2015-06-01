@@ -46,16 +46,58 @@ void write_code(FILE* file, int code, int taille, char* buffer, int k){
 }
 
 /*
+* ma version
+*/
+void writer_code(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste){
+	if(*reste != (taille-8) && code != 256){	
+		//printf("%x\n",code);
+		*buffer = *buffer | (code);
+		//printf("%x\n",*buffer);
+		unsigned char mot = *buffer >> (taille - *reste);
+		//printf("%x \n",mot);
+		write(file, mot);
+		*buffer = *buffer << taille;
+		*reste = *reste -1;
+	}else if (code == 256 && *reste != (taille-8)){ 
+		printf("ici");
+		printf("%x\n",code);
+		*buffer = *buffer | (code);
+		printf("%x\n",*buffer);
+		unsigned char mot = *buffer >> (taille - *reste);
+		printf("%x \n",mot);
+		write(file, mot);
+		mot = *buffer << (8-(taille - *reste));
+		printf("%x \n",mot);
+		*buffer = *buffer << taille;
+		write(file, mot);
+		*reste = *reste -1;
+	}else{
+		printf("ici\n");
+		*buffer = *buffer | (code);
+		printf("buffer avant envoie %x\n \n",*buffer);
+		unsigned char mot = *buffer >> 8;
+		printf("mot avant envoie %x\n \n",mot);
+		write(file,mot);
+		mot = *buffer & 255;
+		write(file,mot);
+		*buffer = 0;
+		*reste = 8;
+	}
+}
+
+/*
 // ecrit dans le fichier ,le caractère
 */
-void write (FILE* fichier, char car){
+void write (FILE* fichier, unsigned char car){
 
 	if(fichier == NULL){
 		fprintf (stderr, "Echec de l'ouverture du fichier");
 		exit(EXIT_FAILURE);
 	}
-	
-	fputc(car, fichier);
+	//printf("0x%x\n",car);
+	//fprintf(fichier,"%x", car);
+	fwrite(&car, sizeof(car), 1, fichier);
+	//fputc(car, fichier);
 }
 
 /*
@@ -64,7 +106,7 @@ void write (FILE* fichier, char car){
 int read (FILE *fichier){
 	int res;
 	if(fichier == NULL){
-		fprintf (stderr, "Echec de l'ouverture du ");
+		fprintf (stderr, "Echec de l'ouverture du fichier ");
 		exit(EXIT_FAILURE);
 	}
 	
