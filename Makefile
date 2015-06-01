@@ -19,12 +19,15 @@ TO_CLEAN = $(BIN)/* $(OBJ)/*
 all: main
 
 $(OBJ)/%.o: $(SRC)/%.c $(INC)/%.h
+	@- mkdir -p $(OBJ)
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
 $(OBJ)/%.o: $(SRC)/%.c
+	@- mkdir -p $(OBJ)
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
-main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/lect-ecri-bin.o
+main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/rwbin.o
+	@- mkdir -p $(BIN)
 	$(CC) $(CFLAGS) -o $(BIN)/$@ $^
 
 clean:
