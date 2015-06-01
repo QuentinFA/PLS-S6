@@ -1,3 +1,10 @@
+/*************************************
+ * Projet Logiciel Niveau Système    *
+ *   Antoine BLANC - Quentin FAURE   *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
+ *             Sun BIN               *
+ *              RICM 3               *
+ *************************************/
 #ifndef _BIN_
 #define _BIN_
 
@@ -6,41 +13,42 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-/*LIT LE BINAIRE
-// bin -> 9bits -> décomprésseur
-//@param fichier entree
-//@param taille du dico
-//@param le reste du buffer vari de 1 à 8
-//@param buffer de reception  contient les bits restants après la lecture et ensuite mis à jour
-//@return le code sur taille bit
-*/
+/*
+ * LIT LE BINAIRE
+ * bin -> 9bits -> Décomprésseur
+ * @param file : Fichier entree
+ * @param taille : Taille du dico
+ * @param k : Le reste du buffer vari de 1 à 8
+ * @param buffer : Buffer de reception  contient les bits restants après la lecture et ensuite mis à jour
+ * @return : Le code sur taille bit
+ */
 int read_code(FILE* file, int taille, int k, int* buffer);
 
-/*LIT LE BINAIRE
-// texte -> compresseur -> 8bits
-//@param fichier sortie
-//@param code du caractère 
-//@param taille du dico
-//@param le reste du buffer vari de 8 à 1
-//@param buffer d'envoie  contient les bits restants après la lecture et ensuite mis à jour
-//@return le code sur 8 bit
-*/
+/*
+ * Texte -> Compresseur -> 8bits
+ * @param file : Fichier sortie
+ * @param code : Code du caractère 
+ * @param taille : Taille du dico
+ * @param buffer : Buffer d'envoie  contient les bits restants après la lecture et ensuite mis à jour
+ * @param k : Le reste du buffer vari de 8 à 1
+ * @return : Le code sur 8 bit
+ */
 void write_code(FILE* file, int code, int taille, char* buffer, int k);
-
 
 void writer_code(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste);
 
-/*ecrit un caractere dans le fichier spécifié
-//@param fichier sortie 
-//@param caractere à insérer dans le fichier
-//@return rien
-*/
+/*
+ * Ecrit un caractere dans le fichier spécifié
+ * @param fichier : Fichier sortie 
+ * @param car : Caractere à insérer dans le fichier
+ */
 void write (FILE* fichier, unsigned char car);
 
-/*lit un caractere dans le fichier spécifié
-//@param fichier entree
-//@return le code ASCII du caractere
-*/
+/*
+ * Lit un caractere dans le fichier spécifié
+ * @param fichier : Fichier entree
+ * @return : Le code ASCII du caractere
+ */
 int read (FILE *fichier);
 
 #endif

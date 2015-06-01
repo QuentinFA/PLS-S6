@@ -1,7 +1,7 @@
 /*************************************
  * Projet Logiciel Niveau Système    *
  *   Antoine BLANC - Quentin FAURE   *
- * Sara OOUNISSI - Adrien SIPASSEUTH *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
  *             Sun BIN               *
  *              RICM 3               *
  *************************************/
@@ -18,7 +18,7 @@
 typedef struct data data;
 struct data
 {
-	unsigned char d;
+	short int d;
 	data *next;
 	int size;
 };

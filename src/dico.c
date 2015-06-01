@@ -1,7 +1,7 @@
 /*************************************
  * Projet Logiciel Niveau Système    *
  *   Antoine BLANC - Quentin FAURE   *
- * Sara OOUNISSI - Adrien SIPASSEUTH *
+ *  Sara OUNISSI - Adrien SIPASSEUTH *
  *             Sun BIN               *
  *              RICM 3               *
  *************************************/
@@ -13,7 +13,7 @@
 
 /*
  * Initialisation d'un dictionnaire
- * @param dic : Un pointeur vers le dictionnaire à créer
+ * @return : Un pointeur vers le dictionnaire à créer
  */
 map* init_map()
 {
@@ -22,18 +22,32 @@ map* init_map()
 
 	dic = malloc(sizeof(map));
 
+	if(dic == NULL)
+	{
+		fprintf(stderr, "Allocation error : dico.c/init_map\n");
+		exit(EXIT_FAILURE);
+	}
+
 	dic->tab = calloc(BEGINING_SIZE, sizeof(elem));
+
+	if(dic->tab == NULL)
+	{
+		fprintf(stderr, "Allocation error : dico.c/init_map\n");
+		exit(EXIT_FAILURE);
+	}
+
 	dic->nb_elem = 0;
 	dic->size = BEGINING_SIZE;
 	dic->code_size = 9;
 
-	// Initialisation des valeurs possibles et de leur encodage sur 1 octet
+	// Initialisation des valeurs possibles et de leur encodage sur 1 octet et EOF = 256
 	for(i = 0; i < 256; i++)
 	{
 		set_code(create_data(&i, 1), dic);
 	}
 
-	// TODO : Codes supplémentaires, comme EOF
+	i = _EOF;
+	set_code(create_data(&i, 1), dic);
 
 	return dic;
 }
@@ -42,20 +56,11 @@ map* init_map()
  * Ajoute un code correspondant à une donnée
  * @param o : La donnée
  * @param dic : Le dictionnaire à modifier
- * @param code : Le code correspondant à o à ajouter
- * @return : True si l'ajout a réussi, False sinon
  */
  void set_code(data* o, map* dic)
 {
 	int h = hash(*o) % dic->size;
 	elem* add_here;
-
-	// Pas assez d'espace, augmentation d'une puissance de 2
-	/*if(++dic->nb_elem > dic->size)
-	{
-		dic->size *= 2;
-		dic->tab = realloc(dic->tab, sizeof(elem) * dic->size);
-	}*/
 
 	add_here = dic->tab[h];
 
@@ -65,15 +70,28 @@ map* init_map()
 		while(add_here->next != NULL)
 			add_here = add_here->next;
 		add_here->next = calloc(1, sizeof(elem));
+
+		if(add_here == NULL)
+		{
+			fprintf(stderr, "Allocation error : dico.c/set_code\n");
+			exit(EXIT_FAILURE);
+		}
+
 		add_here = add_here->next;
 	}
 	else
 	{
 		add_here = calloc(1, sizeof(elem));
+
+		if(add_here == NULL)
+		{
+			fprintf(stderr, "Allocation error : dico.c/set_code\n");
+			exit(EXIT_FAILURE);
+		}
+		
 		dic->tab[h] = add_here;
 	}
 
-	// Echec du calloc
 	if(add_here == NULL)
 	{
 		fprintf(stderr, "Allocation error : data.c/create_data\n");
@@ -83,7 +101,7 @@ map* init_map()
 	add_here->data = o;
 	add_here->code = dic->nb_elem++;
 
-	if(dic->nb_elem >= 2<<dic->code_size)
+	if(dic->nb_elem >= 2 << dic->code_size)
 		dic->code_size++;
 
 }
