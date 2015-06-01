@@ -40,13 +40,14 @@ map* init_map()
 	dic->size = BEGINING_SIZE;
 	dic->code_size = 9;
 
-	// Initialisation des valeurs possibles et de leur encodage sur 1 octet
+	// Initialisation des valeurs possibles et de leur encodage sur 1 octet et EOF = 256
 	for(i = 0; i < 256; i++)
 	{
 		set_code(create_data(&i, 1), dic);
 	}
 
-	// TODO : Codes supplémentaires, comme EOF
+	i = _EOF;
+	set_code(create_data(&i, 1), dic);
 
 	return dic;
 }

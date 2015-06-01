@@ -14,7 +14,7 @@ OBJ = ./obj
 LIB = ./lib
 INC = ./include
 
-TO_CLEAN = $(BIN)/* $(OBJ)/*
+TO_CLEAN = $(OBJ)/*
 
 all: main
 
@@ -33,4 +33,5 @@ main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/rwbin.o
 clean:
 	@rm -rf $(TO_CLEAN)
 
-.PHONY: clean
+clean_all: clean
+	@rm -rf $(BIN)/* $(TO_CLEAN)

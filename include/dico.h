@@ -13,6 +13,7 @@
 
 #define BEGINING_SIZE 512
 #define NO_CODE -1
+#define _EOF 256
 
 typedef struct elem elem;
 struct elem
