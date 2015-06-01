@@ -15,7 +15,7 @@
  * @param file : Le fichier dans lequel lire
  * @return : L'octet lu
  */
-unsigned char read(FILE* file)
+unsigned char read_b(FILE* file)
 {
 	if(file == NULL)
 	{
@@ -23,11 +23,11 @@ unsigned char read(FILE* file)
 		exit(EXIT_FAILURE);
 	}
 
-	unsigned char read;
+	unsigned char r;
 
-	fread(&read, sizeof(read), 1, file);
+	fread(&r, sizeof(r), 1, file);
 
-	return read;
+	return r;
 }
 
 /*
@@ -68,7 +68,7 @@ int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev
 
 	while(i < nb_read)
 	{
-		r = read(file);
+		r = read_b(file);
 		res <<= RW_SIZE;
 		res += r;
 		i++;
@@ -88,7 +88,7 @@ int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev
  * @param fichier : Fichier sortie 
  * @param car : Caractere à insérer dans le fichier
  */
-void write (FILE* file, unsigned char car){
+void write_b(FILE* file, unsigned char car){
 
 	if(file == NULL)
 	{
@@ -106,27 +106,27 @@ void write (FILE* file, unsigned char car){
  * @param buffer : Buffer contenant le reste auquel le code suivant sera ajouté
  * @param k : Le nombre de bit à écrire pour completer l'octet
  */
-void writer_code(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste){
+void write_c(FILE* file,unsigned int code, unsigned int taille, int* buffer, int* reste){
 	if(*reste != (taille-RW_SIZE) && code != _EOF){	
 		*buffer = *buffer | (code);
 		unsigned char mot = *buffer >> (taille - *reste);
-		write(file, mot);
+		write_b(file, mot);
 		*buffer = *buffer << taille;
 		*reste = *reste -1;
 	}else if (code == _EOF && *reste != (taille-RW_SIZE)){ 
 		*buffer = *buffer | (code);
 		unsigned char mot = *buffer >> (taille - *reste);
-		write(file, mot);
+		write_b(file, mot);
 		mot = *buffer << (RW_SIZE-(taille - *reste));
 		*buffer = *buffer << taille;
-		write(file, mot);
+		write_b(file, mot);
 		*reste = *reste -1;
 	}else{
 		*buffer = *buffer | (code);
 		unsigned char mot = *buffer >> RW_SIZE;
-		write(file,mot);
+		write_b(file,mot);
 		mot = *buffer & 255;
-		write(file,mot);
+		write_b(file,mot);
 		*buffer = 0;
 		*reste = RW_SIZE;
 	}

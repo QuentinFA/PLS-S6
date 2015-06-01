@@ -8,11 +8,11 @@
 CC = gcc
 CFLAGS = -Wall
 
-SRC = ./src
-BIN = ./bin
-OBJ = ./obj
-LIB = ./lib
-INC = ./include
+SRC = src
+BIN = bin
+OBJ = obj
+LIB = lib
+INC = include
 
 TO_CLEAN = $(OBJ)/*
 
@@ -26,9 +26,11 @@ $(OBJ)/%.o: $(SRC)/%.c
 	@- mkdir -p $(OBJ)
 	$(CC) -c $< -o $@ $(CFLAGS) -I $(INC)
 
-main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/rwbin.o
+main: $(OBJ)/main.o $(OBJ)/dico.o $(OBJ)/data.o $(OBJ)/rwbin.o $(OBJ)/codage.o
 	@- mkdir -p $(BIN)
 	$(CC) $(CFLAGS) -o $(BIN)/$@ $^
+
+.PHONY : clean clean_all
 
 clean:
 	@rm -rf $(TO_CLEAN)

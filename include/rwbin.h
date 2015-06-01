@@ -15,7 +15,7 @@
  * @param file : Le fichier dans lequel lire
  * @return : L'octet lu
  */
-unsigned char read(FILE* file);
+unsigned char read_b(FILE* file);
 
 /*
  * Ecrit un code dans un fichier
@@ -43,7 +43,7 @@ int read_c(FILE* file, int code_size, int* nb_prev, int* for_next, int from_prev
  * @param fichier : Fichier sortie 
  * @param car : Caractere à insérer dans le fichier
  */
-void write (FILE* file, unsigned char car);
+void write_b(FILE* file, unsigned char car);
 
 /*
  * Texte -> Compresseur -> 8bits

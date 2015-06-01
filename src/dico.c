@@ -59,6 +59,9 @@ map* init_map()
  */
  void set_code(data* o, map* dic)
 {
+	if(is_set(*o, dic))
+		return;
+
 	int h = hash(*o) % dic->size;
 	elem* add_here;
 

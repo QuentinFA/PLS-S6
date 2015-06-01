@@ -11,6 +11,8 @@
 #include "data.h"
 #include <string.h>
 
+#ifndef _CODAGE_H
+#define _CODAGE_H
 
 /*
  * Codage d'une donnee lu dans le fichier a coder
@@ -18,7 +20,7 @@
  * @param dic : Le dictionnaire à modifier
  * @return : l'entier du mot code
  */
-int * codage(FILE* f, map* dic);
+int* codage(FILE* f, map* dic);
 
 /*
  * Decodage d'une donnee lu dans le fichier
@@ -26,4 +28,6 @@ int * codage(FILE* f, map* dic);
  * @param dic : Le dictionnaire à modifier
  * @return : chaine de char qui a ete decode
  */
-char*decodage(FILE* f , map* dic);
+char* decodage(FILE* f , map* dic);
+
+#endif
