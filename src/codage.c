@@ -147,16 +147,12 @@ void decodage(char *name_in, char *name_out)
 		f = data;
 
 		// Ecriture de la donnée sauf la dernière partie, qui sera utilisée au prochain tour
-		printf("BEFORE\n");
 		while(t->next != NULL && t != NULL)
 		{
-			printf("BEGIN\n");
 			write_b(f_out, t->d);
 			data = t;
 			t = t->next;
-			printf("END %p\n", t);
 		}
-		printf("AFTER\n");
 
 		data->next = NULL;
 		remove_data(f);
