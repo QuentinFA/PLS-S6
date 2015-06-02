@@ -14,6 +14,7 @@
 #define BEGINING_SIZE 512
 #define NO_CODE -1
 #define _EOF 256
+#define _SIZE_UP 257
 
 typedef struct elem elem;
 struct elem

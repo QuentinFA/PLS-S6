@@ -48,6 +48,8 @@ map* init_map()
 
 	i = _EOF;
 	set_code(create_data(&i, 1), dic);
+	i = _SIZE_UP;
+	set_code(create_data(&i, 1), dic);
 
 	return dic;
 }
