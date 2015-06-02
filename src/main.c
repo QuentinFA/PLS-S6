@@ -24,7 +24,7 @@ bool is_directory(const char *path);
 int main(int argc, char* argv[])
 {
 	int i;
-	char* out;
+	char* out, *t;
 
 	if(argc <= 2)
 		help();
@@ -41,10 +41,17 @@ int main(int argc, char* argv[])
 				else
 				{
 					out = malloc(strlen((argv[i]) + 4) * sizeof(char));
+					if(out == NULL)
+					{
+						fprintf(stderr, "Allocation error : main.c/main\n");
+						exit(EXIT_FAILURE);
+					}
+
 					strcpy(out, argv[i]);
 					strcat(out, _EXTENSION);
 					printf("Compressing %s as %s...\n", argv[i], out);
 					// SEND TO COMPRESS FUNC
+					free(out);
 				}
 			}
 		}
@@ -63,10 +70,25 @@ int main(int argc, char* argv[])
 					else
 					{
 						out = malloc(strlen((argv[i]) - 4) * sizeof(char));
+						if(out == NULL)
+						{
+							fprintf(stderr, "Allocation error : main.c/main\n");
+							exit(EXIT_FAILURE);
+						}
+
 						strcpy(out, argv[i]);
-						*(strstr(out, _EXTENSION)) = '\0';
+						t = strstr(out, _EXTENSION);
+						while(strstr(t + 1, _EXTENSION) != NULL)
+							t = strstr(t + 1, _EXTENSION);
+						*t = '\0';
+						t = out;
+						out = malloc((strlen(out) + 1) * sizeof(char));
+						out[0] = '_';
+						strcat(out, t);
+						free(t);
 						printf("Decompressing %s as %s...\n", argv[i], out);
 						// SEND TO DECOMPRESS FUNC
+						free(out);
 					}
 				}
 			}
