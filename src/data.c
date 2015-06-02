@@ -96,6 +96,48 @@ void remove_data(data* d)
 }
 
 /*
+ * Ajouter une partie à une donnée existante
+ * @param d : La data à modifier
+ * @param add : La valeur à ajouter
+ */
+void add_data(data* d, int add)
+{
+	data* c;
+
+	if(d != NULL)
+	{
+		c = d;
+		while(c->next != NULL)
+			c = c->next;
+		c->next = malloc(sizeof(data));
+		c->d = (short int) add;
+		c->next->next = NULL;
+		c->next->size = 0;
+		d->size++;
+	}
+}
+
+/*
+ * Fusion de 2 données dans la 1ere
+ */
+void fus_data(data* d1, data* d2)
+{
+	if(d1 == NULL || d2 == NULL)
+		return;
+
+	data* c;
+
+	c = d1;
+
+	d1->size += d2->size;
+
+	while(c->next != NULL)
+		c = c->next;
+
+	c->next = d2;
+}
+
+/*
  * Fonction de hashage
  */
 int hash(data o)

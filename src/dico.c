@@ -48,8 +48,6 @@ map* init_map()
 
 	i = _EOF;
 	set_code(create_data(&i, 1), dic);
-	i = _SIZE_UP;
-	set_code(create_data(&i, 1), dic);
 
 	return dic;
 }
@@ -131,7 +129,9 @@ bool is_set(data o, map* dic)
 	{
 		current = dic->tab[h];
 		while(current != NULL && !data_equals(*(current->data), o))
+		{
 			current = current->next;
+		}
 	}
 
 	return current != NULL && data_equals(*(current->data), o);

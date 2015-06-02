@@ -46,6 +46,18 @@ bool data_equals(data d1, data d2);
 void remove_data(data* d);
 
 /*
+ * Ajouter une partie à une donnée existante
+ * @param d : La data à modifier
+ * @param add : La valeur à ajouter
+ */
+void add_data(data* d, int add);
+
+/*
+ * Fusion de 2 données dans la 1ere
+ */
+void fus_data(data* d1, data* d2);
+
+/*
  * Fonction de hashage
  */
 int hash(data o);

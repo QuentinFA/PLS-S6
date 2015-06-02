@@ -8,10 +8,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h> 
+#include <unistd.h>
 #include <stdbool.h>
 #include <sys/stat.h>
-//#include "codage.h"
+#include "codage.h"
 
 #define _COMPRESS "-c"
 #define _DECOMPRESS "-d"
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 					strcpy(out, argv[i]);
 					strcat(out, _EXTENSION);
 					printf("Compressing %s as %s...\n", argv[i], out);
-					// SEND TO COMPRESS FUNC
+					codage(argv[i], out);
 					free(out);
 				}
 			}
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 						strcat(out, t);
 						free(t);
 						printf("Decompressing %s as %s...\n", argv[i], out);
-						// SEND TO DECOMPRESS FUNC
+						decodage(argv[i], out);
 						free(out);
 					}
 				}

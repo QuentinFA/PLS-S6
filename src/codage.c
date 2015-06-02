@@ -7,184 +7,165 @@
  *************************************/
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+#include <unistd.h>
 #include "dico.h"
 #include "data.h"
 #include "codage.h"
+#include "rwbin.h"
 
-int * codage(FILE* f, map* dic)
+/*
+ * Codage d'une donnee lu dans le fichier a coder
+ * @param f_entrer : nom du fichier en entree (fichier a coder)
+ * @param f_sortie : nom du fichier en sortie (fichier code)
+ */
+void codage(char* f_entrer,char* f_sortie) 
 { 
-         dic = init_map();
-         FILE* pfile=f;
-         if(!(pfile=fopen(filename,"r")))
-	 {
-		 printf("faut");
-	 }
-	 fseek(pfile,0L,SEEK_END);
-	 int flen=ftell(pfile);
-	 char *p=(char*)malloc(flen+1);
-         if(p==NULL)
-         {
-               fprintf(stderr, "Allocation error ");
+	//Declaration du dico et initialisation
+	map*dic = init_map(); 
+	
+	FILE* pfile; 
+
+	//Ouverture du fichier
+	if(!(pfile=fopen(f_entrer,"r"))) 
+	{ 
+		printf("faut"); 
+	} 
+	
+	//Recupere le nombre d'element a lire dans le fichier ouvert
+	fseek(pfile,0L,SEEK_END); 
+	int flen=ftell(pfile); 
+	
+	//Declare un tableau ou on va stocker tous les element a lire
+	//Dans le fichier
+	int*p=(int *)malloc(flen*sizeof(int)); 
+
+	if(p==NULL) 
+	{ 
+		fprintf(stderr, "Allocation error "); 
 		exit(EXIT_FAILURE);
-         }
-	 int *q=(int*)malloc(flen);
-         if(q==NULL)
-         {
-               fprintf(stderr, "Allocation error ");
-		exit(EXIT_FAILURE);
-         }
-	 fseek(pfile,0L,SEEK_SET);
-	 fread(p,flen,1,pfile);
-	 p[flen]=0;
-	 int temp=0;
-	 int count=1;
-	 int sortie=0;
-	 while(temp<(flen+1))
-	 { 
-		 data*d=create_data(&p[temp],count);
-		 if(is_set(d,dic))
-		 {
-			 count++;
-			 
-		 }
-		 else
-		 {
-			 
-			 data*d2=creat_data(&p[temp],(count-1));
-			 q[sortie]=get_code(d2,dic);
-			 sortie++;
-			 set_code(d,dic);
-			 temp+=(count-1);
-	     	 count=1;
-		 }
-	 }
-	 int*output=(int*)malloc(sortie);
-          if(output==NULL)
-         {
-             fprintf(stderr, "Allocation error ");
-		exit(EXIT_FAILURE);
-         }
-	 for(int i=0;i<sortie;i++)
-	 {
-		 output[i]=q[i];
-	 }
-   return output;
-     
+	} 
+
+	//Declare le tableau qui va contenir les codes
+	
+	fseek(pfile,0L,SEEK_SET); 
+
+ 	//Lecture du fichier
+	int i;  
+	for(i=0;i<flen;i++) 
+	{ 
+		p[i]=fgetc(pfile); 
+	} 
+
+	//Declaration des variables pour le codage et l'ajoue dans le dico 
+	int temp=0; 
+	int count=1; 
+	data* d1,*d2; 
+	
+	//Gestion de l'ecriture dans le fichier de sortie
+	FILE* f_sor;                                                     
+	int buffer=0;
+	int reste=8; 
+	if(!(f_sor=fopen(f_sortie,"wb"))) 
+	{ 
+		printf("faut"); 
+	} 
+
+	//Parcours le tableau de char
+	//Si la chaine de char existe dans le dico on lui ajoute un nouveau char
+	//Si la chaine n'existe pas on affiche le code de la chaine precendente
+	//Dans le fichier de sortie, et on ajoute dans le dico la nouvelle chaine
+	while(temp<flen) 
+	{ 
+		d1=create_data(&p[temp],count);  
+		if(is_set(*d1,dic)) 
+		{ 
+			count+=1; 
+		} 
+		else 
+		{ 
+			d2=create_data(&p[temp],(count-1)); 
+ 
+			if(temp<flen -1)
+			{
+				write_c(f_sor,get_code(*d2,dic),dic->code_size,&buffer,&reste);  
+			}
+
+			set_code(d1,dic); 
+			temp+=(count-1);  
+			count=1; 
+		} 
+	} 
+	
+	//Gestion de la fin de fichier
+	int end = _EOF;
+	data * fin=create_data(&end,1);
+	write_c(f_sor,get_code(*fin,dic),dic->code_size,&buffer,&reste);
+	
+	//Liberation des pointeur
+	free(p);
+	free_map(dic);
 }
 
-} 
-     
-}
-char*decodage(file *f , map*dic)
-{ 
-   FILE* pfile=f;
-	 if(!(pfile=fopen(filename,"r")))
-	 {
-		 printf("faut");
-	 }
-	 fseek(pfile,0L,SEEK_END);
-	 int flen=ftell(pfile);
-	 int*p=(int*)malloc(flen);
-         if(p==NULL)
-         {
-               fprintf(stderr, "Allocation error ");
-		exit(EXIT_FAILURE);
-         }
-	 fseek(pfile,0L,SEEK_SET);
-	 fread(p,flen,1,pfile);
-	 int i=0;
-	 data*dd;
-	 char*prime;
-	 char*sec;
-	 while(i<flen)
-	 {
-		 dd=(data*)malloc(sizeof(data)*flen);
-                 if(dd==NULL)
-                   {
-                    fprintf(stderr, "Allocation error ");
-		    exit(EXIT_FAILURE);
-                   }
-		 dd[i]=get_data(p[i],dic);
-		 prime=(char)*malloc((dd[i]->size)+1);
-                 if(prime==NULL)
-                   {
-                    fprintf(stderr, "Allocation error ");
-		    exit(EXIT_FAILURE);
-                   }
-                 data dtemp=dd[i];
-		 for(int k=0;k<dd[i]->size;k++)
-		 {
-			 
-			 prime[k]=dtemp->d;
-			 dtemp=dtemp->next;
-		 }
-		 data dd[i+1]=get_data(p[i+1],dic);
-		 if(dd[i+1]==NULL)
-		 {
-			 sec=(char*)malloc((dd[i]->size)*2);
-                         if(sec==NULL)
-                        {
-                            fprintf(stderr, "Allocation error ");
-		            exit(EXIT_FAILURE);
-                         } 
+void decodage(char *name_in, char *name_out)
+{
+	FILE *f_in, *f_out;
+	int cr = 0, nb_prev = 0, n = 0, i_eof = _EOF;
+	data* data, *d_eof = create_data(&i_eof, 1), *t, *f;
+	map* d = init_map();
 
-       		         data dtemp1=dd[i];
-                         data dtemp2=dd[i];	 
-                        for(int k=0;k<(dd[i]->size)*2;k++)
-			 {
-				 
-				 if(k<dd[i]->size)
-				 {
-				  
-				   sec[k]=dtemp1->d;
-				   dtemp1=dtemp1->next;
-				 }
-				 else
-				 {
-				   
-				   sec[k]=dtemp2->d;
-				   dtemp2=dtemp2->next;
-				 }
-			 }
-		 }
-		 else
-		 {
-			 sec=(char*)malloc(dd[i+1]->size);
-                         if(sec==NULL)
-                            {
-                               fprintf(stderr, "Allocation error ");
-		               exit(EXIT_FAILURE);
-                            }
-			 data dtemp4=dd[i+1];
-			 for(int k=0;k<dd[i+1]->size;k++)
-			 {
-				 sec[k]=dtemp4->d;
-				 dtemp4=dtemp4->next;
-			 }
-		 }
-		 
-		 prime[dd[i]->size]=sec[0];
-		 data dtemp5=create_data(prime,(dd[i]->size)+1);
-		 set_code(dtemp5,dic);
-		 i++;
-	 }
-	 int temp=0;
-	 for(int i=0;i<flen;i++)
-	 {
-		 temp+=dd[i]->size;
-	 }
-	 char*output=(char*)malloc(temp);
-	 int count=0;
-	 for(int i=0;i<flen;i++)
-	 {
-                 data dtemp=dd[i];
-		 for(int j=0;j<dd[i]->size;j++)
-		 {
-			 output[count]=dtemp->d;
-			 dtemp=dtemp->next;
-			 count++;
-		 }
-	 }
-	 return output;
+	f_in = fopen(name_in, "rb");
+	if(f_in == NULL)
+	{
+		fprintf(stderr, "Null file pointer : codage.c/decodage\n");
+		exit(EXIT_FAILURE);
+	}
+
+	f_out = fopen(name_out, "wb+");
+	if(f_in == NULL)
+	{
+		fprintf(stderr, "Null file pointer : codage.c/decodage\n");
+		exit(EXIT_FAILURE);
+	}
+
+	cr = read_c(f_in, d->code_size, &nb_prev, &n, n);
+	data = get_data(cr, d);
+
+	while(!data_equals(*data, *d_eof))
+	{
+		cr = read_c(f_in, d->code_size, &nb_prev, &n, n);
+		fus_data(data, get_data(cr, d));
+
+		while(is_set(*data, d))
+		{
+			cr = read_c(f_in, d->code_size, &nb_prev, &n, n);
+			fus_data(data, get_data(cr, d));
+		}
+
+		set_code(data, d);
+
+		t = data;
+		f = data;
+
+		// Ecriture de la donnée sauf la dernière partie, qui sera utilisée au prochain tour
+		printf("BEFORE\n");
+		while(t->next != NULL && t != NULL)
+		{
+			printf("BEGIN\n");
+			write_b(f_out, t->d);
+			data = t;
+			t = t->next;
+			printf("END %p\n", t);
+		}
+		printf("AFTER\n");
+
+		data->next = NULL;
+		remove_data(f);
+
+		data = t;
+		data->size = 1;
+	}
+
+	fclose(f_in);
+	fclose(f_out);
+
 }

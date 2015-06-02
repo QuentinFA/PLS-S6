@@ -16,11 +16,10 @@
 
 /*
  * Codage d'une donnee lu dans le fichier a coder
- * @param o f : descripteur de fichier
- * @param dic : Le dictionnaire à modifier
- * @return : l'entier du mot code
+ * @param f_entrer : nom du fichier en entree (fichier a coder)
+ * @param f_sortie : nom du fichier en sortie (fichier code)
  */
-int* codage(FILE* f, map* dic);
+void codage(char* f_entrer,char* f_sortie);
 
 /*
  * Decodage d'une donnee lu dans le fichier
@@ -28,6 +27,6 @@ int* codage(FILE* f, map* dic);
  * @param dic : Le dictionnaire à modifier
  * @return : chaine de char qui a ete decode
  */
-char* decodage(FILE* f , map* dic);
+void decodage(char *name_in, char *name_out);
 
 #endif

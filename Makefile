@@ -5,7 +5,7 @@
 #               RICM 3              #
 #####################################
 
-CC = gcc
+CC = ./colorgcc
 CFLAGS = -Wall
 
 SRC = src
